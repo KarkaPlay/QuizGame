@@ -5,27 +5,75 @@ using UnityEngine;
 public class QuizManager : MonoBehaviour
 {
     public List<Question> questions;
-
     public TextMeshProUGUI questionTextField;
-
     public List<TextMeshProUGUI> answerTextFields;
+
+    public int currentQuestionIndex = 0;
+
+    public int score = 0;
+    public TextMeshProUGUI scoreText;
+
+    public GameObject player;
+    public GameObject spawnPoint;
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
-        questionTextField.text = questions[0].questionText;
+        ShowQuestion();
+    }
+
+    void ShowQuestion()
+    {
+        Question current = questions[currentQuestionIndex];
+
+        questionTextField.text = current.questionText;
 
         for (int i = 0; i < answerTextFields.Count; i++)
         {
-            Debug.Log($"В поле номер {i} записан текст ответа номер {i} ({questions[0].answers[i]}) из вопроса номер {0}");
-
-            answerTextFields[i].text = questions[0].answers[i];
+            answerTextFields[i].text = current.answers[i];
         }
     }
 
-    // Update is called once per frame
-    void Update()
+    public void CheckAnswer(int playerAnswer)
     {
+        Question current = questions[currentQuestionIndex];
 
+        if (playerAnswer == current.correctIndex)
+        {
+            Debug.Log("Молодец правильно");
+            score++;
+            scoreText.text = $"Очки: {score}";
+        }
+        else
+        {
+            Debug.Log("Не молодец неправильно");
+        }
+
+        player.SetActive(false);
+
+        player.transform.position = spawnPoint.transform.position;
+
+        player.SetActive(true);
+
+        NextQuestion();
+    }
+
+    void NextQuestion()
+    {
+        currentQuestionIndex++;
+
+        if (currentQuestionIndex < questions.Count)
+        {
+            ShowQuestion();
+        }
+        else
+        {
+            EndGame();
+        }
+    }
+
+    void EndGame()
+    {
+        Debug.Log($"Викторина окончена! Результат: {score} из {questions.Count}");
     }
 }
