@@ -1,10 +1,11 @@
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class QuizManager : MonoBehaviour
 {
-    public List<Question> questions;
+    public QuizData quizData;
     public TextMeshProUGUI questionTextField;
     public List<TextMeshProUGUI> answerTextFields;
 
@@ -24,7 +25,7 @@ public class QuizManager : MonoBehaviour
 
     void ShowQuestion()
     {
-        Question current = questions[currentQuestionIndex];
+        Question current = quizData.questions[currentQuestionIndex];
 
         questionTextField.text = current.questionText;
 
@@ -36,7 +37,7 @@ public class QuizManager : MonoBehaviour
 
     public void CheckAnswer(int playerAnswer)
     {
-        Question current = questions[currentQuestionIndex];
+        Question current = quizData.questions[currentQuestionIndex];
 
         if (playerAnswer == current.correctIndex)
         {
@@ -62,7 +63,7 @@ public class QuizManager : MonoBehaviour
     {
         currentQuestionIndex++;
 
-        if (currentQuestionIndex < questions.Count)
+        if (currentQuestionIndex < quizData.questions.Count)
         {
             ShowQuestion();
         }
@@ -74,6 +75,8 @@ public class QuizManager : MonoBehaviour
 
     void EndGame()
     {
-        Debug.Log($"Викторина окончена! Результат: {score} из {questions.Count}");
+        Debug.Log($"Викторина окончена! Результат: {score} из {quizData.questions.Count}");
+
+        SceneManager.LoadScene("MainMenu");
     }
 }
