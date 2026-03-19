@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
+using UnityEngine.InputSystem;
 using UnityEngine.SceneManagement;
 
 public class QuizManager : MonoBehaviour
@@ -17,9 +18,18 @@ public class QuizManager : MonoBehaviour
     public GameObject player;
     public GameObject spawnPoint;
 
+    public PlayerInput playerInput;
+    public GameObject endgameMenu;
+    public TextMeshProUGUI resultText;
+
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
+        Cursor.visible = false;
+        Cursor.lockState = CursorLockMode.Locked;
+
+        quizData = AllQuizes.Instance.quizes[AllQuizes.Instance.chosenQuiz];
+
         ShowQuestion();
     }
 
@@ -75,8 +85,18 @@ public class QuizManager : MonoBehaviour
 
     void EndGame()
     {
-        Debug.Log($"Викторина окончена! Результат: {score} из {quizData.questions.Count}");
+        playerInput.SwitchCurrentActionMap("UI");
 
+        Cursor.visible = true;
+        Cursor.lockState = CursorLockMode.None;
+
+        endgameMenu.SetActive(true);
+
+        resultText.text = $"Результат: {score} / {quizData.questions.Count}";
+    }
+
+    public void LoadMenu()
+    {
         SceneManager.LoadScene("MainMenu");
     }
 }
