@@ -3,6 +3,9 @@ using UnityEngine.SceneManagement;
 
 public class MainMenu : MonoBehaviour
 {
+    public GameObject buttonPrefab;
+    public Transform buttonsParent;
+
     public void SaveQuizChoice(int chosenQuiz)
     {
         AllQuizes.Instance.SelectQuiz(chosenQuiz);
@@ -17,5 +20,16 @@ public class MainMenu : MonoBehaviour
     {
         Cursor.visible = true;
         Cursor.lockState = CursorLockMode.None;
+
+        SpawnButtons();
+    }
+
+    void SpawnButtons()
+    {
+        for (int i = 0; i < AllQuizes.Instance.quizes.Count; i++)
+        {
+            GameObject newButton = Instantiate(buttonPrefab, buttonsParent);
+            newButton.GetComponent<QuizButton>().Initialize(AllQuizes.Instance.quizes[i].quizName, i, this);
+        }
     }
 }

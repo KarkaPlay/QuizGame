@@ -51,16 +51,16 @@ public class QuizManager : MonoBehaviour
         }
     }
 
-    public void CheckAnswer(int playerAnswer)
+    public void CheckAnswer(AnswerPlatform playerAnswer)
     {
         StartCoroutine(CheckAnswerRoutine(playerAnswer));
     }
 
-    public IEnumerator CheckAnswerRoutine(int playerAnswer)
+    public IEnumerator CheckAnswerRoutine(AnswerPlatform playerAnswer)
     {
         Question current = quizData.questions[currentQuestionIndex]; //Вопрос текущий = данныеВикторины.вопросы[номерТекущегоВопроса]
 
-        bool isCorrect = (playerAnswer == current.correctIndex); // онПравильный = (ответИгрока == текущий.номерПравильного)
+        bool isCorrect = (playerAnswer.answerIndex == current.correctIndex); // онПравильный = (ответИгрока == текущий.номерПравильного)
 
         // Шаг 1. Блокировать управление
 
@@ -80,17 +80,18 @@ public class QuizManager : MonoBehaviour
         {
             score++;
             scoreText.text = $"Очки: {score}";
+
+            playerAnswer.SpawnCorrectVFX();
         }
         else
         {
             // Как-то неправильно ответили
+            playerAnswer.SpawnWrongVFX();
         }
 
         // 3. Fade Out
 
         yield return StartCoroutine(screenFader.FadeOut()); // Ждем пока экран затемнится
-
-
 
         // 4. Тп игрока и переключение вопроса
 
@@ -148,6 +149,9 @@ public class QuizManager : MonoBehaviour
         player.GetComponent<ThirdPersonController>().enabled = false;
 
         resultText.text = $"Результат: {score} / {quizData.questions.Count}";
+
+        //player.GetComponent<ThirdPersonController>().MoveSpeed = 0;
+        //player.GetComponent<ThirdPersonController>().SprintSpeed = 0;
     }
 
     public void LoadMenu()

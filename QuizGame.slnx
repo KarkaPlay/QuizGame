@@ -1,9 +1,10 @@
 ﻿<Solution>
   <Project Path="MerryYellow.CodeAssist.Editor.csproj" />
+  <Project Path="BetterHierarchy.csproj" />
   <Project Path="Assembly-CSharp.csproj" />
   <Project Path="CFXRRuntime.csproj" />
-  <Project Path="CFXREditor.csproj" />
   <Project Path="Assembly-CSharp-Editor.csproj" />
+  <Project Path="CFXREditor.csproj" />
   <Project Path="Unity.StarterAssets.Editor.csproj" />
   <Project Path="Unity.StarterAssets.csproj" />
   <Project Path="URPWizard.csproj" />
