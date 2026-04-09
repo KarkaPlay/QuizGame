@@ -32,4 +32,13 @@ public class MainMenu : MonoBehaviour
             newButton.GetComponent<QuizButton>().Initialize(AllQuizes.Instance.quizes[i].quizName, i, this);
         }
     }
+
+    public void ExitGame()
+    {
+#if UNITY_EDITOR
+        UnityEditor.EditorApplication.isPlaying = false;
+#else
+        Application.Quit();
+#endif
+    }
 }

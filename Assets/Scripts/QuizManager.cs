@@ -139,19 +139,16 @@ public class QuizManager : MonoBehaviour
 
     void EndGame()
     {
-        playerInput.SwitchCurrentActionMap("UI");
+        player.GetComponent<ThirdPersonController>().enabled = false;
+        player.GetComponent<StarterAssetsInputs>().enabled = false;
+        player.SetActive(false);
 
         Cursor.visible = true;
         Cursor.lockState = CursorLockMode.None;
 
         endgameMenu.SetActive(true);
 
-        player.GetComponent<ThirdPersonController>().enabled = false;
-
         resultText.text = $"Результат: {score} / {quizData.questions.Count}";
-
-        //player.GetComponent<ThirdPersonController>().MoveSpeed = 0;
-        //player.GetComponent<ThirdPersonController>().SprintSpeed = 0;
     }
 
     public void LoadMenu()
