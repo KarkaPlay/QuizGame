@@ -2,45 +2,53 @@ using System.Collections;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class ScreenFader : MonoBehaviour
+namespace QuizGame.UI
 {
-    public Image fadeImage;
-    public float fadeDuration = 0.5f;
-
-    /// <summary>
-    /// Затемнение экрана. Непрозрачность черной картинки плавно переходит от 0 к 1
-    /// </summary>
-    public IEnumerator FadeOut()
+    public class ScreenFader : MonoBehaviour
     {
-        float timer = 0;
+        [SerializeField] private Image _fadeImage;
+        [SerializeField] private float _fadeDuration = 0.5f;
 
-        while (timer < fadeDuration)
+        public float FadeDuration => _fadeDuration;
+
+        public IEnumerator FadeOut()
         {
-            timer += Time.deltaTime;
-            float alpha = timer / fadeDuration;
-            fadeImage.color = new Color(0, 0, 0, alpha);
-            yield return null;
+            float timer = 0f;
+
+            while (timer < _fadeDuration)
+            {
+                timer += Time.deltaTime;
+                float alpha = timer / _fadeDuration;
+                _fadeImage.color = new Color(0, 0, 0, alpha);
+                yield return null;
+            }
+
+            _fadeImage.color = new Color(0, 0, 0, 1f);
         }
 
-        fadeImage.color = new Color(0, 0, 0, 1);
-    }
-
-    /// <summary>
-    /// Отмена затемнения экрана. Непрозрачность черной картинки плавно переходит от 1 к 0
-    /// </summary>
-    public IEnumerator FadeIn()
-    {
-        float timer = 0;
-
-        while (timer < fadeDuration)
+        public IEnumerator FadeIn()
         {
-            timer += Time.deltaTime;
-            float alpha = 1 - (timer / fadeDuration);
-            fadeImage.color = new Color(0, 0, 0, alpha);
-            yield return null;
+            float timer = 0f;
+
+            while (timer < _fadeDuration)
+            {
+                timer += Time.deltaTime;
+                float alpha = 1f - (timer / _fadeDuration);
+                _fadeImage.color = new Color(0, 0, 0, alpha);
+                yield return null;
+            }
+
+            _fadeImage.color = new Color(0, 0, 0, 0f);
         }
 
-        fadeImage.color = new Color(0, 0, 0, 0);
-    }
+        public void SetFullBlack()
+        {
+            _fadeImage.color = new Color(0, 0, 0, 1f);
+        }
 
+        public void SetFullyVisible()
+        {
+            _fadeImage.color = new Color(0, 0, 0, 0f);
+        }
+    }
 }

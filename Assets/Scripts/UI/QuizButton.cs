@@ -2,19 +2,30 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class QuizButton : MonoBehaviour
+namespace QuizGame.UI
 {
-    public TextMeshProUGUI buttonText;
-    public Button button;
-
-    public void Initialize(string quizName, int quizNumber, MainMenu menu)
+    public class QuizButton : MonoBehaviour
     {
-        buttonText.text = quizName;
+        [SerializeField] private TextMeshProUGUI _buttonText;
+        [SerializeField] private Button _button;
 
-        button.onClick.AddListener(() =>
+        private int _quizIndex;
+        private QuizGame.Core.QuizMenuManager _menuManager;
+
+        public void Initialize(string quizName, int quizNumber, QuizGame.Core.QuizMenuManager menu)
         {
-            menu.SaveQuizChoice(quizNumber);
-            menu.SwitchScene();
-        });
+            _buttonText.text = quizName;
+            _quizIndex = quizNumber;
+            _menuManager = menu;
+
+            _button.onClick.RemoveAllListeners();
+            _button.onClick.AddListener(OnClicked);
+        }
+
+        private void OnClicked()
+        {
+            _menuManager.OnQuizSelected(_quizIndex);
+            _menuManager.StartGame();
+        }
     }
 }
